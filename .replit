@@ -1,0 +1,29 @@
+run = "node server.js"
+modules = ["nodejs-20", "python-3.11"]
+
+[nix]
+channel = "stable-23_11"
+packages = ["cairo", "ffmpeg-full", "freetype", "ghostscript", "glibcLocales", "gobject-introspection", "gtk3", "libGL", "libGLU", "pkg-config", "qhull", "tcl", "tk"]
+
+[deployment]
+run = ["node", "server.js"]
+deploymentTarget = "cloudrun"
+
+[[ports]]
+localPort = 3000
+externalPort = 3000
+
+[[ports]]
+localPort = 7860
+externalPort = 3002
+exposeLocalhost = true
+
+[[ports]]
+localPort = 8080
+externalPort = 80
+exposeLocalhost = true
+
+[[ports]]
+localPort = 8765
+externalPort = 3001
+exposeLocalhost = true

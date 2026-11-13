@@ -1,0 +1,1 @@
+{"version":3,"file":"subscriptionStatus.d.ts","sourceRoot":"","sources":["../../../src/generated/types/subscriptionStatus.ts"],"names":[],"mappings":"AAAA;;;;;;GAMG;AACH,OAAO,KAAK,EAAE,sBAAsB,EAAE,MAAM,0BAA0B,CAAC;AAEvE,MAAM,WAAW,kBAAkB;IACjC,IAAI,EAAE,sBAAsB,CAAC;IAC7B,MAAM,EAAE,OAAO,CAAC;IAChB,gBAAgB;IAChB,QAAQ,CAAC,EAAE,MAAM,GAAG,IAAI,CAAC;CAC1B"}

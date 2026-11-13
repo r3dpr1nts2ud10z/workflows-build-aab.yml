@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "N3PSQAL3"
+version = "1.0.0"
+id = "artifacts/n3psqal3"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19609
+
+[services.development]
+run = "pnpm --filter @workspace/n3psqal3 run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/n3psqal3", "run", "build" ]
+publicDir = "artifacts/n3psqal3/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19609"
+BASE_PATH = "/"

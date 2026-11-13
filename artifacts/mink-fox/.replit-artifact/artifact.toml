@@ -1,0 +1,31 @@
+kind = "video"
+previewPath = "/mink-fox/"
+title = "Mink Fox Settlement Cruise"
+version = "1.0.0"
+id = "artifacts/mink-fox"
+router = "path"
+
+[[integratedSkills]]
+name = "video-js"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/mink-fox/" ]
+localPort = 23808
+
+[services.development]
+run = "pnpm --filter @workspace/mink-fox run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/mink-fox", "run", "build" ]
+publicDir = "artifacts/mink-fox/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23808"
+BASE_PATH = "/mink-fox/"

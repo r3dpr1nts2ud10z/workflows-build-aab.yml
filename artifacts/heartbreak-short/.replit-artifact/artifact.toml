@@ -1,0 +1,31 @@
+kind = "video"
+previewPath = "/heartbreak-short/"
+title = "One Leg Heartbreak Short"
+version = "1.0.0"
+id = "artifacts/heartbreak-short"
+router = "path"
+
+[[integratedSkills]]
+name = "video-js"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/heartbreak-short/" ]
+localPort = 19466
+
+[services.development]
+run = "pnpm --filter @workspace/heartbreak-short run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/heartbreak-short", "run", "build" ]
+publicDir = "artifacts/heartbreak-short/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19466"
+BASE_PATH = "/heartbreak-short/"

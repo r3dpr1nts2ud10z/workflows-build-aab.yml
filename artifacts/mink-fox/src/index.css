@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Anton&display=swap');
+
+@layer theme, base, components, utilities;
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  
+  --color-primary: hsl(var(--primary));
+  --color-secondary: hsl(var(--secondary));
+  --color-accent: hsl(var(--accent));
+
+  --font-sans: 'Space Grotesk', sans-serif;
+  --font-display: 'Anton', sans-serif;
+}
+
+:root {
+  /* Dark Oasis */
+  --background: 240 40% 4%;
+  --foreground: 0 0% 100%;
+  
+  /* Lavender/Magenta */
+  --primary: 292 84% 61%;
+  
+  /* Cyan/Blue */
+  --secondary: 189 94% 37%;
+
+  /* Gold */
+  --accent: 45 93% 47%;
+}
+
+@layer base {
+  body {
+    @apply font-sans bg-background text-foreground antialiased;
+  }
+}
+
+.cosmic-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--secondary))];
+}
+
+.neon-border {
+  position: relative;
+}
+.neon-border::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--secondary)));
+  z-index: -1;
+  border-radius: inherit;
+  opacity: 0.5;
+  filter: blur(4px);
+}

@@ -1,0 +1,1 @@
+{"version":3,"file":"insight.d.ts","sourceRoot":"","sources":["../../../src/generated/types/insight.ts"],"names":[],"mappings":"AAAA;;;;;;GAMG;AAEH,MAAM,WAAW,OAAO;IACtB,KAAK,EAAE,MAAM,CAAC;IACd,IAAI,EAAE,MAAM,CAAC;IACb,gBAAgB;IAChB,IAAI,CAAC,EAAE,MAAM,GAAG,IAAI,CAAC;IACrB,IAAI,EAAE,MAAM,CAAC;CACd"}

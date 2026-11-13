@@ -1,0 +1,153 @@
+uploads = []
+
+[[generated]]
+id = "iiHzyk58yi5kU8cOOeCnX"
+uri = "file://artifacts/promo-video/public/images/bg-terminal.png"
+type = "image"
+title = "Cyberpunk terminal abstract neon background"
+
+[[generated]]
+id = "KqdkABRiuKJGPoOP0bHRH"
+uri = "file://artifacts/promo-video/public/images/bg-data.png"
+type = "image"
+title = "Neon sports data nodes"
+
+[[generated]]
+id = "nMmseIcTZSEasPzBWaRAK"
+uri = "file://artifacts/promo-video/public/images/bg-zodiac.png"
+type = "image"
+title = "Futuristic zodiac wheel abstract"
+
+[[generated]]
+id = "97Pd-AAyRpwnkDqatocBV"
+uri = "file://artifacts/roqqet-video/public/images/oasis.png"
+type = "image"
+title = "Neon palm trees oasis"
+
+[[generated]]
+id = "8k516nDUeOuO5aThFbY2q"
+uri = "file://artifacts/roqqet-video/public/images/terminal.png"
+type = "image"
+title = "Mystic terminal R0QQ3T"
+
+[[generated]]
+id = "t0x6V6r3P3oB-Rg51XtOp"
+uri = "file://artifacts/roqqet-video/public/images/zodiac.png"
+type = "image"
+title = "Zodiac system graphic"
+
+[[generated]]
+id = "fcQEm60D0uR-PhbdqRjFq"
+uri = "file://artifacts/heartbreak-short/public/images/devastated_creature.png"
+type = "image"
+title = "Devastated fuzzy creature staring blankly"
+
+[[generated]]
+id = "cV0Osl0RRYdRMFAI4xfff"
+uri = "file://artifacts/heartbreak-short/public/images/glitch_bg.png"
+type = "image"
+title = "Dark moody glitch texture"
+
+[[generated]]
+id = "DA3iCZ7W7BAX2LDX5qMDP"
+uri = "file://artifacts/fox-settlement/public/images/fox-droptop.png"
+type = "image"
+title = "Fox in droptop driving"
+
+[[generated]]
+id = "iKiDb6wq86oWjKmi3JrrK"
+uri = "file://artifacts/fox-settlement/public/images/dark-oasis-bg.png"
+type = "image"
+title = "Dark oasis lavender gold background"
+
+[[generated]]
+id = "ushONgM6-uG5HKrYrdWbh"
+uri = "file://artifacts/fox-settlement/public/images/gold-coins.png"
+type = "image"
+title = "Gold coins raining down"
+
+[[generated]]
+id = "tBnakxEB9A8aiCVA6eRp_"
+uri = "file://artifacts/mink-fox/public/images/fox-mink.png"
+type = "image"
+title = "Fox in mink coat"
+
+[[generated]]
+id = "tnmMr6fvzNnAoVTkLD-7H"
+uri = "file://artifacts/mink-fox/public/images/fox-driving.png"
+type = "image"
+title = "Fox driving with companions"
+
+[[generated]]
+id = "nRZX5ae527Gt39RAX_zIk"
+uri = "file://artifacts/mink-fox/public/images/fox-celebrating.png"
+type = "image"
+title = "Fox celebrating close up"
+
+[[generated]]
+id = "aqbjovFfQJjtS9SUjDX3H"
+uri = "file://artifacts/mink-fox/public/images/neon-city.png"
+type = "image"
+title = "Neon city background"
+
+[[outputs]]
+id = "w-RIgRmjnpvEUHrlwoilb"
+uri = "file://artifacts/promo-video/public/audio/bg_music.mp3"
+type = "audio"
+title = "background music"
+
+[[outputs]]
+id = "NjZVWfzlzPSX9YT7XLz9m"
+uri = "file://exports/brand-kit/profile-1024.png"
+type = "image"
+title = "Profile Picture — 1024px (TikTok / Instagram / Kick)"
+
+[[outputs]]
+id = "i8fvaSpJbz4u_4_IG7aBI"
+uri = "file://exports/brand-kit/profile-512.png"
+type = "image"
+title = "Profile Picture — 512px (Discord)"
+
+[[outputs]]
+id = "Vf66qywy830PC04ixepJ5"
+uri = "file://exports/brand-kit/profile-circle-1024.png"
+type = "image"
+title = "Profile Picture — Pre-cropped Circle (transparent)"
+
+[[outputs]]
+id = "AnL3nvx4VwhiXMtzm7g0b"
+uri = "file://exports/brand-kit/banner-1500x500.png"
+type = "image"
+title = "Channel Banner — 1500×500"
+
+[[outputs]]
+id = "usN1kRVoDqlzvnv7xVYGD"
+uri = "file://artifacts/mink-fox/public/audio/bg_music.mp3"
+type = "audio"
+title = "background music"
+
+[[outputs]]
+id = "Xe6Hz9nd5Fpfnx6nLjUXo"
+uri = "file://exports/n3psqal3-logo-transparent.png"
+type = "image"
+title = "N3PSQAL3 Logo — Transparent (1024px)"
+
+[[outputs]]
+id = "9wJX_8WjQyJgJPxpv5CRU"
+uri = "file://exports/n3psqal3-logo-dark.png"
+type = "image"
+title = "N3PSQAL3 Logo — Dark Background (1024px)"
+
+[[outputs]]
+id = "iZwRR8l_89eD3HwgrqNSI"
+uri = "file://vault/n3psqal3-sbdc-brief.md"
+type = "text"
+title = "N3PSQAL3 — SBDC Call Brief"
+description = "One-page business brief for the Binghamton SBDC advisory call: plain-terms description, revenue model, status, and the five questions to ask in priority order."
+
+[[outputs]]
+id = "k_dh1ZQFmHnHiU9i05cKz"
+uri = "file://exports/n3psqal3-logo-200.png"
+type = "image"
+title = "N3PSQAL3 Logo — 200×200"
+description = "The official N3PSQAL3 mark resized to 200×200 PNG for the Stripe verification prompt."

@@ -1,0 +1,3 @@
+/stream/*  https://YOUR_STREAM_ORIGIN_HOST/hls/:splat  200!
+/epg.xml   /epg.xml                                    200!
+/*         /index.html                                 200

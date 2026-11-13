@@ -1,0 +1,31 @@
+kind = "video"
+previewPath = "/hype-video/"
+title = "N3PSQAL3 Hype Cut"
+version = "1.0.0"
+id = "artifacts/hype-video"
+router = "path"
+
+[[integratedSkills]]
+name = "video-js"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/hype-video/" ]
+localPort = 18725
+
+[services.development]
+run = "pnpm --filter @workspace/hype-video run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/hype-video", "run", "build" ]
+publicDir = "artifacts/hype-video/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18725"
+BASE_PATH = "/hype-video/"

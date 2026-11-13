@@ -1,0 +1,1 @@
+{"version":3,"file":"ticketIngestionError.d.ts","sourceRoot":"","sources":["../../../src/generated/types/ticketIngestionError.ts"],"names":[],"mappings":"AAAA;;;;;;GAMG;AACH,OAAO,KAAK,EAAE,qBAAqB,EAAE,MAAM,yBAAyB,CAAC;AAErE,MAAM,WAAW,oBAAoB;IACnC,OAAO,EAAE,KAAK,CAAC;IACf,KAAK,EAAE,MAAM,CAAC;IACd,eAAe,CAAC,EAAE,qBAAqB,CAAC;CACzC"}

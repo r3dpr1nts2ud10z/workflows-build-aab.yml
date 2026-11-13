@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R3DPR1NT // STANDBY</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: #0a0a0c; color: #ff3366; font-family: monospace; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        .box { border: 1px solid #ff3366; padding: 35px; background: #121214; max-width: 420px; width: 90%; text-align: center; box-shadow: 0 0 25px rgba(255,51,102,0.15); }
+        h1 { font-size: 15px; letter-spacing: 2px; margin-bottom: 12px; }
+        p { color: #888; font-size: 11px; margin-bottom: 22px; text-transform: uppercase; line-height: 1.5; }
+        .btn { background: transparent; border: 1px solid #ff3366; color: #ff3366; padding: 10px 22px; cursor: pointer; font-family: monospace; font-size: 12px; transition: all 0.2s; }
+        .btn:hover { background: #ff3366; color: #0a0a0c; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>NODE OFFLINE // STANDBY</h1>
+        <p>Local broadcast bridge unreachable. Verify network or server status.</p>
+        <button class="btn" onclick="location.reload()">RETRY CONNECTION</button>
+    </div>
+</body>
+</html>

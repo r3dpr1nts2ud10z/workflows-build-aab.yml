@@ -1,0 +1,12 @@
+- [Orval codegen constraints](orval-inline-bodies.md) — name request schemas to avoid duplicate exports; date-time string bounds must run before date coercion.
+- [Settlement risk gates](settlement-risk-gates.md) — sum-then-decide financial guards must run inside the tx behind `pg_advisory_xact_lock`, or concurrent requests jointly exceed the limit.
+- [Whop sync reconciliation](whop-sync-reconciliation.md) — POST /whop/sync isn't a no-op (re-verifies memberships via Whop API); session-gate client auto-sync triggers.
+- [Whop proxy-only connector](whop-proxy-only-connection.md) — no raw api_key exposed; @whop/sdk must route through connectors proxy with per-request identity headers.
+- [Video artifact tsconfig gap](video-tsconfig-lib.md) — video-js scaffolds fail typecheck until `"lib": ["es2022","dom","dom.iterable"]` is added to the artifact tsconfig.
+- [User audio for videos](user-audio-videos.md) — user-supplied tracks: ffmpeg-trim to their timestamp window with fades into public/audio/bg_music.mp3, skip generateMusic, match scene runtime to clip length.
+- [R3DPR1NT vision](r3dpr1nt-vision.md) — sequel product: community hub first, N3PSQAL3 tier-gated, event-based drive-in (not a video library); build only after launch settles.
+- [Stripe connector quirks](stripe-connector-quirks.md) — connector exposes `secret` not `secret_key`; esbuild-bundling stripe-replit-sync silently breaks its migrations (externalize it).
+- [B3N3L0V3NC3 collab](b3n3l0v3nc3-collab.md) — address user as "Golden," partner register, file canon verbatim in his voice into vault/, honest critique, never re-propose task cards.
+- [Evidence precision decisions](evidence-precision-decisions.md) — exact arithmetic is deliberate; parser resource caps are not approved business or settlement limits.
+- [ZETA recording policy](zeta-recording-policy.md) — user chose persistence before simulated registration over deferred, lossy telemetry; do not optimize timing by changing that policy.
+- [Offline Python test environment](offline-python-test-environment.md) — inherited network isolation for subprocess tests; Nix store library matches can have incompatible architectures.

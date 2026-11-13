@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R3DPR1NT // STUDIO CLIENT</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: #0a0a0c; color: #00f3ff; font-family: monospace; height: 100vh; overflow: hidden; }
+        
+        #app-boot-screen {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #0a0a0c; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 10000;
+        }
+        .boot-box { border: 1px solid #00f3ff; padding: 35px; text-align: center; background: #121214; box-shadow: 0 0 25px rgba(0,243,255,0.15); max-width: 420px; width: 90%; }
+        h1 { font-size: 15px; letter-spacing: 2px; margin-bottom: 12px; color: #00f3ff; }
+        p { color: #888; font-size: 11px; margin-bottom: 22px; text-transform: uppercase; line-height: 1.5; }
+        .cyber-btn { background: rgba(0,243,255,0.1); border: 1px solid #00f3ff; color: #00f3ff; padding: 10px 22px; cursor: pointer; font-family: monospace; font-size: 12px; transition: all 0.2s; }
+        .cyber-btn:hover { background: #00f3ff; color: #0a0a0c; }
+        
+        #main-studio-ui { display: none; height: 100vh; padding: 25px; }
+    </style>
+</head>
+<body>
+
+    <div id="app-boot-screen">
+        <div class="boot-box">
+            <h1 id="boot-title">R3DPR1NT // INITIALIZING</h1>
+            <p id="boot-subtext">Establishing node telemetry link...</p>
+            <button id="retry-btn" class="cyber-btn" style="display:none;" onclick="initStudioClient()">RETRY CONNECTION</button>
+        </div>
+    </div>
+
+    <div id="main-studio-ui">
+        <h2>R3DPR1NT STUDIO // ACTIVE</h2>
+        <p>Node connection stable. Ready for dispatches.</p>
+    </div>
+
+    <script>
+        const ENDPOINTS = [
+            localStorage.getItem("CUSTOM_STUDIO_ENDPOINT"),
+            "https://your-public-tunnel-domain.com",
+        ].filter(Boolean);
+
+        async function testEndpoint(url) {
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), 4000);
+            try {
+                const res = await fetch(`${url}/api/health`, { signal: controller.signal });
+                clearTimeout(timer);
+                if (res.ok) return url;
+            } catch (e) {
+                clearTimeout(timer);
+            }
+            return null;
+        }
+
+        async function initStudioClient() {
+            const titleEl = document.getElementById("boot-title");
+            const subtextEl = document.getElementById("boot-subtext");
+            const retryBtn = document.getElementById("retry-btn");
+
+            titleEl.innerText = "R3DPR1NT // CONNECTING";
+            subtextEl.innerText = "Scanning active broadcast nodes...";
+            retryBtn.style.display = "none";
+
+            let activeUrl = null;
+            for (const ep of ENDPOINTS) {
+                activeUrl = await testEndpoint(ep);
+                if (activeUrl) break;
+            }
+
+            if (activeUrl) {
+                window.ACTIVE_STUDIO_ENDPOINT = activeUrl;
+                document.getElementById("app-boot-screen").style.display = "none";
+                document.getElementById("main-studio-ui").style.display = "block";
+            } else {
+                titleEl.innerText = "NODE OFFLINE // STANDBY";
+                subtextEl.innerText = "Unable to reach server. Check network connection.";
+                retryBtn.style.display = "inline-block";
+            }
+        }
+
+        window.addEventListener("DOMContentLoaded", initStudioClient);
+    </script>
+</body>
+</html>

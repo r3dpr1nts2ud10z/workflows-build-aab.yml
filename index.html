@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Control Deck</title>
+    <style>
+        :root {
+            --bg: #0b0c10;
+            --card-bg: #1f2833;
+            --accent: #66fcf1;
+            --text: #c5c6c7;
+            --danger: #ff5555;
+            --success: #50fa7b;
+            --warning: #f1fa8c;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Courier New', Courier, monospace;
+            max-width: 750px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        h1 { color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid #45a29e;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: var(--accent);
+            color: var(--bg);
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            font-family: inherit;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: opacity 0.2s;
+        }
+        button:hover { opacity: 0.8; }
+        input, select {
+            padding: 8px;
+            width: 100%;
+            margin: 8px 0 15px 0;
+            background: #0b0c10;
+            color: #fff;
+            border: 1px solid #45a29e;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        label { font-size: 0.9em; color: var(--accent); }
+        pre {
+            background-color: #000;
+            color: var(--success);
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            max-height: 150px;
+            font-size: 0.85em;
+        }
+        .status-online { color: var(--success); font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9em; margin-top: 10px; }
+        th { border-bottom: 1px solid #45a29e; color: var(--accent); padding: 8px; }
+        td { padding: 8px; border-bottom: 1px solid #1f2833; }
+        .badge-running { color: var(--warning); font-weight: bold; }
+        .badge-completed { color: var(--success); font-weight: bold; }
+        .badge-failed { color: var(--danger); font-weight: bold; }
+        video { width: 100%; max-height: 360px; background: #000; border-radius: 4px; margin-top: 10px; outline: none; }
+        .btn-danger { background-color: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 4px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; font-family: inherit; }
+        .btn-danger:hover { background-color: var(--danger); color: var(--bg); }
+        .btn-warning { background-color: transparent; color: var(--warning); border: 1px solid var(--warning); padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-family: inherit; margin-right: 10px; }
+        .btn-warning:hover { background-color: var(--warning); color: var(--bg); }
+    </style>
+</head>
+<body>
+
+    <h1>R3DPR1NT // Studio Control Deck</h1>
+
+    <div class="card">
+        <h3>System Status</h3>
+        <p>Connection: <span id="server-status" class="status-online">Connecting...</span></p>
+        <button onclick="checkStatus()">Ping Server</button>
+    </div>
+
+    <div class="card">
+        <h3>Pipeline Trigger & Watermarking</h3>
+        
+        <label for="output-name">Output Filename:</label>
+        <input type="text" id="output-name" value="studio_render.mp4">
+
+        <label for="overlay-text">Text Overlay:</label>
+        <input type="text" id="overlay-text" value="R3DPR1NT STUDIO // LIVE FEED">
+
+        <label for="watermark-file">Watermark Image Filename (e.g. logo.png):</label>
+        <input type="text" id="watermark-file" value="logo.png">
+
+        <div style="display: flex; gap: 15px;">
+            <div style="flex: 1;">
+                <label for="render-res">Resolution:</label>
+                <select id="render-res">
+                    <option value="1280x720">1280 x 720 (720p)</option>
+                    <option value="1920x1080">1920 x 1080 (1080p)</option>
+                    <option value="854x480">854 x 480 (480p)</option>
+                </select>
+            </div>
+            <div style="flex: 1;">
+                <label for="render-bitrate">Video Bitrate:</label>
+                <input type="text" id="render-bitrate" value="2M">
+            </div>
+        </div>
+
+        <button onclick="triggerRender()" style="margin-top: 10px;">Dispatch Render Job</button>
+    </div>
+
+    <div class="card">
+        <h3>Video Preview Player</h3>
+        <p id="now-playing" style="font-size: 0.9em; color: var(--accent); margin-bottom: 5px;">No video loaded.</p>
+        <video id="preview-player" controls>
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <div class="card">
+        <h3>Active Background Jobs</h3>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Job ID</th>
+                        <th>Target Output</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="jobs-table-body">
+                    <tr><td colspan="3" style="color: #777;">No active jobs tracked...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Rendered Files & Storage</h3>
+        <div style="margin-bottom: 12px;">
+            <button onclick="loadFiles()" style="margin-right: 8px;">Refresh List</button>
+            <button class="btn-warning" onclick="cleanupAllFiles()">Clear All Renders</button>
+        </div>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Filename</th>
+                        <th>Size (MB)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="file-table-body">
+                    <tr><td colspan="3" style="color: #777;">Loading files...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Activity Log</h3>
+        <pre id="log-output">System initialized. Watermarking pipeline active...</pre>
+    </div>
+
+    <script>
+        function log(message) {
+            const pre = document.getElementById('log-output');
+            const timestamp = new Date().toLocaleTimeString();
+            pre.innerText += `\n[${timestamp}] ${message}`;
+            pre.scrollTop = pre.scrollHeight;
+        }
+
+        async function checkStatus() {
+            try {
+                const res = await fetch('/status');
+                const data = await res.json();
+                document.getElementById('server-status').innerText = data.status.toUpperCase();
+            } catch (err) {
+                document.getElementById('server-status').innerText = "OFFLINE";
+            }
+        }
+
+        async function triggerRender() {
+            const filename = document.getElementById('output-name').value || 'output.mp4';
+            const overlayText = document.getElementById('overlay-text').value;
+            const watermark = document.getElementById('watermark-file').value;
+            const [width, height] = document.getElementById('render-res').value.split('x');
+            const bitrate = document.getElementById('render-bitrate').value || '2M';
+            
+            log(`Dispatching render: ${width}x${height} @ ${bitrate} with watermark "${watermark}"`);
+            
+            try {
+                const res = await fetch('/command', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        action: 'render', 
+                        output: filename, 
+                        width, 
+                        height, 
+                        bitrate, 
+                        overlay_text: overlayText,
+                        watermark: watermark 
+                    })
+                });
+                const data = await res.json();
+                log(`Job dispatched [ID: ${data.job_id}]`);
+                pollJobs();
+            } catch (err) {
+                log(`Render dispatch error: ${err.message}`);
+            }
+        }
+
+        async function deleteFile(filename) {
+            if (!confirm(`Are you sure you want to delete ${filename}?`)) return;
+            
+            try {
+                const res = await fetch('/command', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'delete', filename: filename })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    log(`Deleted: ${filename}`);
+                    loadFiles();
+                } else {
+                    log(`Deletion failed: ${data.error}`);
+                }
+            } catch (err) {
+                log(`Delete request error: ${err.message}`);
+            }
+        }
+
+        async function cleanupAllFiles() {
+            if (!confirm("Are you sure you want to delete ALL rendered video files?")) return;
+            
+            try {
+                const res = await fetch('/command', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'cleanup' })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    log(data.message);
+                    loadFiles();
+                    document.getElementById('preview-player').src = "";
+                    document.getElementById('now-playing').innerText = "No video loaded.";
+                }
+            } catch (err) {
+                log(`Cleanup request error: ${err.message}`);
+            }
+        }
+
+        async function pollJobs() {
+            try {
+                const res = await fetch('/jobs');
+                const jobs = await res.json();
+                const tbody = document.getElementById('jobs-table-body');
+                
+                const jobKeys = Object.keys(jobs);
+                if (jobKeys.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="3" style="color: #777;">No active jobs tracked...</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = '';
+                jobKeys.forEach(key => {
+                    const job = jobs[key];
+                    let badgeClass = 'badge-running';
+                    if (job.status === 'completed') badgeClass = 'badge-completed';
+                    if (job.status === 'failed') badgeClass = 'badge-failed';
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="color: #fff;">${job.id}</td>
+                        <td>${job.output}</td>
+                        <td><span class="${badgeClass}">${job.status.toUpperCase()}</span></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (err) {
+                console.error("Job poll failed:", err);
+            }
+        }
+
+        async function loadFiles() {
+            try {
+                const res = await fetch('/files');
+                const files = await res.json();
+                const tbody = document.getElementById('file-table-body');
+                
+                if (files.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="3" style="color: #777;">No rendered files found yet.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = '';
+                files.forEach(file => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="color: #fff; font-weight: bold;">${file.name}</td>
+                        <td>${file.size} MB</td>
+                        <td>
+                            <button onclick="previewVideo('${file.name}')" style="background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 4px 10px; border-radius: 4px; cursor: pointer; margin-right: 6px; font-weight: bold;">Preview</button>
+                            <a href="/${file.name}" download style="color: var(--success); text-decoration: none; font-weight: bold; margin-right: 6px;" target="_blank">Download</a>
+                            <button class="btn-danger" onclick="deleteFile('${file.name}')">Delete</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (err) {
+                log(`Failed to load file list: ${err.message}`);
+            }
+        }
+
+        function previewVideo(filename) {
+            const player = document.getElementById('preview-player');
+            const nowPlaying = document.getElementById('now-playing');
+            
+            player.src = '/' + filename;
+            player.load();
+            player.play().catch(err => {
+                log(`Autoplay prevented: ${err.message}`);
+            });
+            
+            nowPlaying.innerText = `Now Previewing: ${filename}`;
+            log(`Loaded '${filename}' into video preview player.`);
+        }
+
+        window.onload = () => {
+            checkStatus();
+            loadFiles();
+            pollJobs();
+            setInterval(pollJobs, 3000);
+            setInterval(loadFiles, 5000);
+        };
+    </script>
+</body>
+</html>

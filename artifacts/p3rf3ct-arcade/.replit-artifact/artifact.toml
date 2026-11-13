@@ -1,0 +1,28 @@
+kind = "video"
+previewPath = "/p3rf3ct-arcade/"
+title = "P3RF3CT! Arcade Cut"
+description = "A nostalgic arcade promo for N3PSQAL3: a third-person view of a glowing arcade cabinet in a dark arcade, the pixel-art fox victory screen playing on it with a blinking INSERT COIN prompt, a slow push-in toward the screen as the theme music swells, ending with the N3PSQAL3 logo, name, and 'Verify. Settle. Ascend.' tagline sliding in."
+version = "1.0.0"
+id = "artifacts/p3rf3ct-arcade"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/p3rf3ct-arcade/" ]
+localPort = 18849
+
+[services.development]
+run = "pnpm --filter @workspace/p3rf3ct-arcade run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/p3rf3ct-arcade", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/p3rf3ct-arcade/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18849"
+BASE_PATH = "/p3rf3ct-arcade/"

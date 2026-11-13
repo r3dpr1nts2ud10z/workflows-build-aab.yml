@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>RRN // MOBILE SOVEREIGN NODE</title>
+  <style>
+    body { background: #050507; color: #00ff66; font-family: 'Courier New', monospace; margin: 0; padding: 12px; }
+    header { border-bottom: 1px solid #00ff66; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+    h1 { margin: 0; font-size: 1.1rem; letter-spacing: 1px; color: #fff; }
+    .badge { background: #00ff66; color: #000; padding: 3px 8px; font-weight: bold; font-size: 0.75rem; border-radius: 3px; }
+    .card { background: #12131a; border: 1px solid #1f2233; border-radius: 6px; padding: 12px; margin-top: 12px; }
+    .label { font-size: 0.7rem; color: #888; text-transform: uppercase; }
+    .value { font-size: 1.1rem; color: #fff; font-weight: bold; margin-top: 2px; }
+    .live-dot { height: 8px; width: 8px; background-color: #ff3333; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>
+      <h1>RRN MOBILE NODE</h1>
+      <span style="font-size:0.65rem; color:#888;">Channel 420 Pocket Terminal</span>
+    </div>
+    <div class="badge">AUTONOMOUS</div>
+  </header>
+
+  <!-- Live Status Card -->
+  <div class="card">
+    <div class="label"><span class="live-dot"></span> Active Broadcast Block</div>
+    <div class="value" id="m-current-show" style="color:#00ff66; font-size:0.95rem;">Synchronizing...</div>
+  </div>
+
+  <!-- Treasury Liquidity Card -->
+  <div class="card">
+    <div class="label">Deployable Working Capital</div>
+    <div class="value" id="m-deployable">Ξ 0.00</div>
+  </div>
+
+  <!-- Sectors Grid -->
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px;">
+    <div class="card" style="margin-top:0;">
+      <div class="label">Active Wallets</div>
+      <div class="value" id="m-wallets">0</div>
+    </div>
+    <div class="card" style="margin-top:0;">
+      <div class="label">Network Revenue</div>
+      <div class="value" id="m-rev" style="color:#00ff66;">$0.00</div>
+    </div>
+  </div>
+
+  <script>
+    function updateMobileUI(data) {
+      document.getElementById('m-current-show').innerText = data.active_broadcast.title;
+      document.getElementById('m-deployable').innerText = `Ξ ${data.capital_treasury.available_to_deploy_eth.toFixed(2)}`;
+      document.getElementById('m-wallets').innerText = data.viewer_metrics.active_connected_wallets.toLocaleString();
+      document.getElementById('m-rev').innerText = `$${data.financial_telemetry.total_dai_revenue.toFixed(2)}`;
+    }
+
+    function connectWS() {
+      const wsUrl = "wss://" + window.location.host;
+      const ws = new WebSocket(wsUrl);
+      ws.onmessage = (event) => updateMobileUI(JSON.parse(event.data));
+      ws.onclose = () => setTimeout(connectWS, 3000);
+    }
+
+    fetch('/api/syndicate/state').then(r => r.json()).then(updateMobileUI).catch(() => {});
+    connectWS();
+  </script>
+</body>
+</html>

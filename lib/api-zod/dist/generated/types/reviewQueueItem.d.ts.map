@@ -1,0 +1,1 @@
+{"version":3,"file":"reviewQueueItem.d.ts","sourceRoot":"","sources":["../../../src/generated/types/reviewQueueItem.ts"],"names":[],"mappings":"AAAA;;;;;;GAMG;AACH,OAAO,KAAK,EAAE,OAAO,EAAE,MAAM,WAAW,CAAC;AAEzC,MAAM,WAAW,eAAe;IAC9B,OAAO,EAAE,OAAO,CAAC;IACjB,gBAAgB;IAChB,SAAS,CAAC,EAAE,MAAM,GAAG,IAAI,CAAC;IAC1B,QAAQ,EAAE,MAAM,CAAC;CAClB"}

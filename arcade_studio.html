@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>R3DPR1NT S2UD10Z // Arcade Studio Control Deck</title>
+    <style>
+        /* Instant Paint Guard: Ensures viewports render background immediately */
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: #0d1117 !important;
+            color: #c9d1d9;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg-dark: #0d1117;
+            --panel-bg: #161b22;
+            --border-color: #30363d;
+            --accent-green: #2ea043;
+            --accent-glow: rgba(46, 160, 67, 0.4);
+            --text-main: #c9d1d9;
+            --text-dim: #8b949e;
+            --danger: #f85149;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        #app-viewport {
+            padding: 20px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-dark);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 1px solid var(--border-color);
+        }
+
+        .status-badge.offline { background: #321; color: var(--danger); border-color: var(--danger); }
+        .status-badge.online { background: #122; color: var(--accent-green); border-color: var(--accent-green); box-shadow: 0 0 8px var(--accent-glow); }
+
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .panel {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel h2 {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: var(--text-dim);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        button {
+            background: #21262d;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background: #30363d;
+            border-color: var(--text-dim);
+        }
+
+        button.btn-primary {
+            background: #1f6feb;
+            color: white;
+            border-color: #388bfd;
+        }
+
+        button.btn-primary:hover {
+            background: #388bfd;
+        }
+
+        button.btn-danger {
+            background: #da3633;
+            color: white;
+            border-color: #f85149;
+        }
+
+        button.btn-danger:hover {
+            background: #f85149;
+        }
+
+        .progress-container {
+            margin-top: 20px;
+        }
+
+        .progress-bar-bg {
+            background: #0d1117;
+            border: 1px solid var(--border-color);
+            height: 24px;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            background: var(--accent-green);
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .progress-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            top: 3px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+        }
+
+        .console-output {
+            background: #05070a;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto;
+            font-size: 0.85rem;
+            color: #7ee787;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .log-entry {
+            border-left: 2px solid var(--accent-green);
+            padding-left: 8px;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body bgcolor="#0d1117">
+
+    <div id="app-viewport">
+        <header>
+            <h1>R3DPR1NT S2UD10Z // ARCADE STUDIO</h1>
+            <div id="connectionStatus" class="status-badge offline">DISCONNECTED</div>
+        </header>
+
+        <div class="grid-layout">
+            <!-- Control Panel Section -->
+            <div class="panel">
+                <h2>Pipeline Controls</h2>
+                <div class="controls">
+                    <button class="btn-primary" onclick="triggerStartBatch()">⚡ Start Batch Render</button>
+                    <button class="btn-danger" onclick="triggerAbortRender()">🛑 Abort Current Chunk</button>
+                </div>
+
+                <div class="progress-container">
+                    <div style="margin-bottom: 8px; font-size: 0.85rem; color: var(--text-dim);" id="chunkStatusLabel">Current Chunk: IDLE</div>
+                    <div class="progress-bar-bg">
+                        <div id="progressBarFill" class="progress-bar-fill"></div>
+                        <div id="progressText" class="progress-text">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Terminal Stream Section -->
+            <div class="panel">
+                <h2>Nervous System Stream (Console)</h2>
+                <div id="consoleOutput" class="console-output">
+                    <div class="log-entry">[SYSTEM] Initializing Arcade Studio interface...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Startup Safety: Execute UI init immediately upon layout parse
+        document.addEventListener("DOMContentLoaded", function() {
+            logToConsole("DOM initialized successfully. Checking WebSocket runtime environment...");
+            connectWebSocket();
+        });
+
+        const WS_URL = "wss://wise-brooms-beg.loca.lt"; // Update to active tunnel URL
+        let ws;
+
+        const statusBadge = document.getElementById("connectionStatus");
+        const consoleOutput = document.getElementById("consoleOutput");
+        const progressBarFill = document.getElementById("progressBarFill");
+        const progressText = document.getElementById("progressText");
+        const chunkStatusLabel = document.getElementById("chunkStatusLabel");
+
+        function logToConsole(text, isError = false) {
+            if (!consoleOutput) return;
+            const entry = document.createElement("div");
+            entry.className = "log-entry";
+            if (isError) entry.style.borderColor = "var(--danger)";
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${text}`;
+            consoleOutput.appendChild(entry);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        function connectWebSocket() {
+            try {
+                logToConsole(`Connecting to sovereign bridge at ${WS_URL}...`);
+                ws = new WebSocket(WS_URL);
+
+                ws.onopen = () => {
+                    statusBadge.textContent = "CONNECTED";
+                    statusBadge.className = "status-badge online";
+                    logToConsole("Handshake successful. Bridge active.");
+                };
+
+                ws.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        logToConsole(`EVENT [${data.event}]: ${data.message || data.text || JSON.stringify(data)}`);
+
+                        if (data.event === "PROGRESS_UPDATE") {
+                            updateProgress(data.percent, data.chunk, data.status);
+                        } else if (data.event === "QUEUE_COMPLETE") {
+                            updateProgress(100, "COMPLETE", "FINISHED");
+                        }
+                    } catch (e) {
+                        logToConsole(`Raw message: ${event.data}`);
+                    }
+                };
+
+                ws.onclose = () => {
+                    statusBadge.textContent = "DISCONNECTED";
+                    statusBadge.className = "status-badge offline";
+                    logToConsole("Connection lost. Reconnecting in 3 seconds...", true);
+                    setTimeout(connectWebSocket, 3000);
+                };
+
+                ws.onerror = (err) => {
+                    logToConsole("WebSocket error encountered.", true);
+                };
+            } catch (err) {
+                logToConsole("Failed to initialize WebSocket client: " + err.message, true);
+            }
+        }
+
+        function updateProgress(percent, chunkName, status) {
+            if (progressBarFill) progressBarFill.style.width = `${percent}%`;
+            if (progressText) progressText.textContent = `${percent}%`;
+            if (chunkStatusLabel) chunkStatusLabel.textContent = `Current Chunk: ${chunkName} [${status}]`;
+        }
+
+        function triggerStartBatch() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({
+                    action: "START_BATCH",
+                    params: { model: "ComfyUI-V2V-Master", crf: 18 }
+                }));
+                logToConsole("Dispatched command: START_BATCH");
+            } else {
+                logToConsole("Cannot send command: WebSocket is disconnected.", true);
+            }
+        }
+
+        function triggerAbortRender() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({
+                    action: "ABORT_RENDER",
+                    params: {}
+                }));
+                logToConsole("Dispatched command: ABORT_RENDER", true);
+            } else {
+                logToConsole("Cannot send command: WebSocket is disconnected.", true);
+            }
+        }
+    </script>
+</body>
+</html>

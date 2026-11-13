@@ -1,0 +1,19 @@
+{
+  "active_show": "New_Jack_City_Boyz_Parody",
+  "environment": "1994_Redbird_7_Train",
+  "demigod_joker": {
+    "character": "Ted the Teddy Bear",
+    "sabotage_probability": 0.15,
+    "promo_assets": "/assets/ted_sabotage_clips/"
+  },
+  "character_mapping": {
+    "Nino_Brown": {
+      "asset": "fox_nino_leather.png",
+      "archetype": "Sleek Street Fox"
+    },
+    "Boyz_Hood_Cast": {
+      "asset": "bear_monkey_roster.png",
+      "archetype": "Armed Wildlife Ensemble"
+    }
+  }
+}
