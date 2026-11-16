@@ -21,9 +21,14 @@ jobs:
 
       - name: Locate Gradle project and build AAB
         run: |
-          if [ -f "android/gradlew" ]; then
-            cd android
+          GRADLEW_PATH=$(find . -name "gradlew" -type f | head -n 1)
+          if [ -z "$GRADLEW_PATH" ]; then
+            echo "Error: gradlew not found in repository!"
+            exit 1
           fi
+          PROJECT_DIR=$(dirname "$GRADLEW_PATH")
+          cd "$PROJECT_DIR"
+          echo "Found gradlew at $GRADLEW_PATH. Building from $PROJECT_DIR..."
           chmod +x ./gradlew
           ./gradlew bundleRelease --stacktrace
 
@@ -32,4 +37,3 @@ jobs:
         with:
           name: red-spade-network-release-aab
           path: '**/build/outputs/bundle/release/*.aab'
-          
