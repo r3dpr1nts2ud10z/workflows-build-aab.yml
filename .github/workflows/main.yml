@@ -22,21 +22,21 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Locate or Generate Gradle Wrapper and Build AAB
+      - name: Build AAB in Android Directory
         run: |
-          BUILD_FILE=$(find . -name "build.gradle" -o -name "build.gradle.kts" | head -n 1)
-          if [ -z "$BUILD_FILE" ]; then
-            echo "Error: No build.gradle found in repository!"
+          if [ -d "android" ]; then
+            cd android
+            echo "Navigated into android directory."
+          else
+            echo "Error: android directory not found!"
             exit 1
           fi
-          PROJECT_DIR=$(dirname "$BUILD_FILE")
-          cd "$PROJECT_DIR"
-          
+
           if [ ! -f "./gradlew" ]; then
-            echo "gradlew not found. Generating wrapper..."
+            echo "Generating gradle wrapper..."
             gradle wrapper
           fi
-          
+
           chmod +x ./gradlew
           ./gradlew bundleRelease --stacktrace
 
