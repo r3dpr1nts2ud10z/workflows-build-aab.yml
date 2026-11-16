@@ -22,37 +22,18 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Locate Project and Build Android APK
+      - name: Configure Release Signing & Build APK
+        working-directory: ./workspace-android
         run: |
-          echo "Repository layout:"
-          ls -la
-
-          # Find where build.gradle or gradlew actually lives in the repo
-          GRADLEW_PATH=$(find . -maxdepth 3 -name "gradlew" | head -n 1)
-
-          if [ -n "$GRADLEW_PATH" ]; then
-            PROJECT_DIR=$(dirname "$GRADLEW_PATH")
-            echo "Found Gradle wrapper in: $PROJECT_DIR"
-            cd "$PROJECT_DIR"
-            chmod +x ./gradlew
-            ./gradlew assembleRelease --no-daemon
-          else
-            BUILD_GRADLE_PATH=$(find . -maxdepth 3 -name "build.gradle*" | head -n 1)
-            if [ -n "$BUILD_GRADLE_PATH" ]; then
-              PROJECT_DIR=$(dirname "$BUILD_GRADLE_PATH")
-              echo "Found Android project without wrapper in: $PROJECT_DIR"
-              cd "$PROJECT_DIR"
-              gradle wrapper --gradle-version 8.5
-              chmod +x ./gradlew
-              ./gradlew assembleRelease --no-daemon
-            else
-              echo "Error: No Android project or build.gradle found in repository."
-              exit 1
-            fi
+          # Inject debug signing into release buildType if no signingConfig exists
+          if ! grep -q "signingConfig" app/build.gradle; then
+            sed -i '/buildTypes {/a \        release { signingConfig signingConfigs.debug }' app/build.gradle
           fi
+          chmod +x ./gradlew
+          ./gradlew assembleRelease --no-daemon
 
-      - name: Upload APK Artifact
+      - name: Upload Signed APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: red-spade-network-release-apk
-          path: "**/build/outputs/apk/release/*.apk"
+          name: red-spade-network-signed-apk
+          path: workspace-android/app/build/outputs/apk/release/*.apk
