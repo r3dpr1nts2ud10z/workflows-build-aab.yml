@@ -22,92 +22,48 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Generate Android TWA Wrapper & Build AAB
+      - name: Build Android App Bundle
         run: |
           set -e
-          SETTINGS_FILE=$(find . -name "settings.gradle" -o -name "settings.gradle.kts" | head -n 1)
-          
-          if [ -z "$SETTINGS_FILE" ]; then
-            echo "No existing Android Gradle project found. Generating Android wrapper..."
-            mkdir -p android/app/src/main/java/com/redspade/network/twa
+          BUILD_DIR=$(find . -name "settings.gradle" -o -name "settings.gradle.kts" | head -n 1)
+          if [ -z "$BUILD_DIR" ]; then
+            echo "Generating default Android project structure..."
+            mkdir -p android/app/src/main/java/com/redspade/app
             cd android
             
-            cat << 'EOF' > app/build.gradle
-plugins {
-    id 'com.android.application'
+            cat << 'EOF' > settings.gradle
+rootProject.name = "RedSpade"
+include ':app'
+EOF
+
+            cat << 'EOF' > build.gradle
+buildscript {
+    repositories { google(); mavenCentral() }
+    dependencies { classpath 'com.android.tools.build:gradle:8.1.0' }
 }
+allprojects { repositories { google(); mavenCentral() } }
+EOF
+
+            cat << 'EOF' > app/build.gradle
+plugins { id 'com.android.application' }
 android {
-    namespace 'com.redspade.network.twa'
+    namespace 'com.redspade.app'
     compileSdk 34
     defaultConfig {
-        applicationId "com.redspade.network.twa"
+        applicationId 'com.redspade.app'
         minSdk 21
         targetSdk 34
         versionCode 1
         versionName "1.0"
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-        }
-    }
-}
-dependencies {
-    implementation 'androidx.appcompat:appcompat:1.6.1'
 }
 EOF
 
-            cat << 'EOF' > build.gradle
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.2.0'
-    }
-}
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-task clean(type: Delete) {
-    delete rootProject.buildDir, buildDir
-}
-EOF
-
-            cat << 'EOF' > settings.gradle
-pluginManagement {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
-}
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-rootProject.name = "RedSpadeTWA"
-include ':app'
-EOF
-
+            mkdir -p app/src/main
             cat << 'EOF' > app/src/main/AndroidManifest.xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <uses-permission android:name="android.permission.INTERNET" />
-    <application
-        android:allowBackup="true"
-        android:label="Red Spade Network"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+    <application android:label="Red Spade">
+        <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -117,35 +73,22 @@ EOF
 </manifest>
 EOF
 
-            cat << 'EOF' > app/src/main/java/com/redspade/network/twa/MainActivity.java
-package com.redspade.network.twa;
+            mkdir -p app/src/main/java/com/redspade/app
+            cat << 'EOF' > app/src/main/java/com/redspade/app/MainActivity.java
+package com.redspade.app;
+import android.app.Activity;
 import android.os.Bundle;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import androidx.appcompat.app.AppCompatActivity;
-
-public class MainActivity extends AppCompatActivity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+public class MainActivity extends Activity {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WebView webView = new WebView(this);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.setWebViewClient(new WebViewClient());
-        webView.loadUrl("https://example.com");
-        setContentView(webView);
     }
 }
 EOF
-
-            echo "Android wrapper generated successfully."
           else
-            PROJECT_DIR=$(dirname "$SETTINGS_FILE")
-            cd "$PROJECT_DIR"
-            echo "Found existing project in: $PROJECT_DIR"
+            cd "$(dirname "$BUILD_DIR")"
           fi
 
           if [ ! -f "./gradlew" ]; then
-            echo "Generating Gradle wrapper..."
             gradle wrapper
           fi
 
