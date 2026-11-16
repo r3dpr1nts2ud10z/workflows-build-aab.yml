@@ -1,0 +1,32 @@
+{
+  "network": "Red Spade Network (RSN)",
+  "site_id": "RoastRoyceNetwork-420",
+  "channels": [
+    {
+      "id": "rsn-main",
+      "name": "Red Spade 24/7 Live Feed",
+      "stream_url": "/hls/live.m3u8",
+      "schedule": [
+        {
+          "time": "08:00 - 10:00",
+          "show_title": "RSN Market Open & Yields",
+          "host": "ZETA Tollbooth Engine",
+          "category": "Finance / DeFI"
+        },
+        {
+          "time": "10:00 - 12:00",
+          "show_title": "Red Spade Bets: The Edge",
+          "host": "Sportsbook Partner",
+          "category": "Sports Betting / Odds Analytics",
+          "description": "Live line movements, sharp betting models, and real-time sportsbook telemetry."
+        },
+        {
+          "time": "12:00 - 16:00",
+          "show_title": "Continuous Media Loop & Telemetry",
+          "host": "RSN Playout",
+          "category": "Entertainment"
+        }
+      ]
+    }
+  ]
+}

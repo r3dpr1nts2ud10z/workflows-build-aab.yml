@@ -3,7 +3,7 @@ modules = ["nodejs-20", "python-3.11"]
 
 [nix]
 channel = "stable-23_11"
-packages = ["cairo", "ffmpeg-full", "freetype", "ghostscript", "glibcLocales", "gobject-introspection", "gtk3", "libGL", "libGLU", "pkg-config", "qhull", "tcl", "tk"]
+packages = ["cairo", "ffmpeg-full", "freetype", "ghostscript", "glibcLocales", "gobject-introspection", "gtk3", "libGL", "libGLU", "libxcrypt", "pkg-config", "qhull", "tcl", "tk"]
 
 [deployment]
 run = ["node", "server.js"]
