@@ -12,10 +12,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-- uses: actions/checkout@v4
-      with:- uses: actions/checkout@v4
-  with:
-    submodules: false      - name: Set up JDK 17
+        with:
+          submodules: false
+
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
@@ -29,7 +29,7 @@ jobs:
         run: |
           # Inject debug signing into release buildType if no signingConfig exists
           if ! grep -q "signingConfig" app/build.gradle; then
-            sed -i '/buildTypes {/a \        release { signingConfig signingConfigs.debug }' app/build.gradle
+            sed -i '/ buildTypes {/a \        release { signingConfig signingConfigs.debug }' app/build.gradle
           fi
           chmod +x ./gradlew
           ./gradlew assembleRelease --no-daemon
@@ -39,9 +39,4 @@ jobs:
         with:
           name: red-spade-network-signed-apk
           path: workspace-android/app/build/outputs/apk/release/*.apk
-<uses-feature android:name="android.software.leanback" android:required="false" />
-<uses-feature android:name="android.hardware.touchscreen" android:required="false" />
-<category android:name="android.intent.category.LEANBACK_LAUNCHER" />
-- uses: actions/checkout@v4
-  with:
-    submodules: false
+          
