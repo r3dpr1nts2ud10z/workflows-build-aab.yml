@@ -19,16 +19,24 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Locate Gradle project and build AAB
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Locate or Generate Gradle Wrapper and Build AAB
         run: |
-          GRADLEW_PATH=$(find . -name "gradlew" -type f | head -n 1)
-          if [ -z "$GRADLEW_PATH" ]; then
-            echo "Error: gradlew not found in repository!"
+          BUILD_FILE=$(find . -name "build.gradle" -o -name "build.gradle.kts" | head -n 1)
+          if [ -z "$BUILD_FILE" ]; then
+            echo "Error: No build.gradle found in repository!"
             exit 1
           fi
-          PROJECT_DIR=$(dirname "$GRADLEW_PATH")
+          PROJECT_DIR=$(dirname "$BUILD_FILE")
           cd "$PROJECT_DIR"
-          echo "Found gradlew at $GRADLEW_PATH. Building from $PROJECT_DIR..."
+          
+          if [ ! -f "./gradlew" ]; then
+            echo "gradlew not found. Generating wrapper..."
+            gradle wrapper
+          fi
+          
           chmod +x ./gradlew
           ./gradlew bundleRelease --stacktrace
 
