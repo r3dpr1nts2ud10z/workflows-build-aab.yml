@@ -40,3 +40,6 @@ jobs:
 <uses-feature android:name="android.software.leanback" android:required="false" />
 <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+- uses: actions/checkout@v4
+  with:
+    submodules: false
