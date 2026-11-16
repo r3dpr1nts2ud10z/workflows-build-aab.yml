@@ -26,7 +26,7 @@ jobs:
         run: |
           set -e
           if [ ! -f "settings.gradle" ]; then
-            echo "Generating Gradle project with plugin repositories..."
+            echo "Generating Gradle project..."
             
             echo "pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }" > settings.gradle
             echo "dependencyResolutionManagement { repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS); repositories { google(); mavenCentral() } }" >> settings.gradle
@@ -34,7 +34,7 @@ jobs:
             echo "include ':app'" >> settings.gradle
             
             mkdir -p app/src/main
-            echo "plugins { id 'com.android.application' version '8.1.0' }" > app/build.gradle
+            echo "plugins { id 'com.android.application' version '8.2.0' }" > app/build.gradle
             echo "android { namespace 'com.redspade.app'; compileSdk 34; defaultConfig { applicationId 'com.redspade.app'; minSdk 21; targetSdk 34; versionCode 1; versionName '1.0'; } }" >> app/build.gradle
             
             echo "<manifest xmlns:android='http://schemas.android.com/apk/res/android'><uses-permission android:name='android.permission.INTERNET'/><application android:label='Red Spade'><activity android:name='.MainActivity' android:exported='true'><intent-filter><action android:name='android.intent.action.MAIN'/><category android:name='android.intent.category.LAUNCHER'/></intent-filter></activity></application></manifest>" > app/src/main/AndroidManifest.xml
@@ -44,7 +44,8 @@ jobs:
           fi
 
           if [ ! -f "./gradlew" ]; then
-            gradle wrapper
+            echo "Generating Gradle 8.5 wrapper..."
+            gradle wrapper --gradle-version 8.5
           fi
 
           chmod +x ./gradlew
