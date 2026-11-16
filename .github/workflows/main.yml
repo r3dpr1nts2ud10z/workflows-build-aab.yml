@@ -19,6 +19,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Debug Repository File Tree
+        run: |
+          echo "Listing repository structure:"
+          find . -maxdepth 3 -not -path '*/.*'
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
@@ -26,13 +31,19 @@ jobs:
         run: |
           SETTINGS_FILE=$(find . -name "settings.gradle" -o -name "settings.gradle.kts" | head -n 1)
           if [ -z "$SETTINGS_FILE" ]; then
-            echo "Error: settings.gradle not found anywhere in the repository!"
-            exit 1
+            echo "Searching for build.gradle instead..."
+            BUILD_FILE=$(find . -name "build.gradle" -o -name "build.gradle.kts" | head -n 1)
+            if [ -z "$BUILD_FILE" ]; then
+              echo "Error: No build files found in repository!"
+              exit 1
+            fi
+            PROJECT_DIR=$(dirname "$BUILD_FILE")
+          else
+            PROJECT_DIR=$(dirname "$SETTINGS_FILE")
           fi
           
-          PROJECT_DIR=$(dirname "$SETTINGS_FILE")
           cd "$PROJECT_DIR"
-          echo "Found Gradle project in directory: $PROJECT_DIR"
+          echo "Working in project directory: $PROJECT_DIR"
 
           if [ ! -f "./gradlew" ]; then
             echo "Generating gradle wrapper..."
