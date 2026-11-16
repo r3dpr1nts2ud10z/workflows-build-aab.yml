@@ -26,15 +26,18 @@ jobs:
         run: |
           set -e
           if [ ! -f "settings.gradle" ]; then
-            echo "Generating default Gradle project..."
-            echo "rootProject.name = 'RedSpade'" > settings.gradle
+            echo "Generating Gradle project with plugin repositories..."
+            
+            echo "pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }" > settings.gradle
+            echo "dependencyResolutionManagement { repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS); repositories { google(); mavenCentral() } }" >> settings.gradle
+            echo "rootProject.name = 'RedSpade'" >> settings.gradle
             echo "include ':app'" >> settings.gradle
             
             mkdir -p app/src/main
-            echo "plugins { id 'com.android.application' }" > app/build.gradle
-            echo "android { namespace 'com.redspade.app'; compileSdk 34; defaultConfig { applicationId 'com.redspade.app'; minSdk 21; targetSdk 34; } }" >> app/build.gradle
+            echo "plugins { id 'com.android.application' version '8.1.0' }" > app/build.gradle
+            echo "android { namespace 'com.redspade.app'; compileSdk 34; defaultConfig { applicationId 'com.redspade.app'; minSdk 21; targetSdk 34; versionCode 1; versionName '1.0'; } }" >> app/build.gradle
             
-            echo "<manifest xmlns:android='http://schemas.android.com/apk/res/android'><application android:label='Red Spade'><activity android:name='.MainActivity' android:exported='true'><intent-filter><action android:name='android.intent.action.MAIN'/><category android:name='android.intent.category.LAUNCHER'/></intent-filter></activity></application></manifest>" > app/src/main/AndroidManifest.xml
+            echo "<manifest xmlns:android='http://schemas.android.com/apk/res/android'><uses-permission android:name='android.permission.INTERNET'/><application android:label='Red Spade'><activity android:name='.MainActivity' android:exported='true'><intent-filter><action android:name='android.intent.action.MAIN'/><category android:name='android.intent.category.LAUNCHER'/></intent-filter></activity></application></manifest>" > app/src/main/AndroidManifest.xml
             
             mkdir -p app/src/main/java/com/redspade/app
             echo "package com.redspade.app; import android.app.Activity; import android.os.Bundle; public class MainActivity extends Activity { @Override protected void onCreate(Bundle s) { super.onCreate(s); } }" > app/src/main/java/com/redspade/app/MainActivity.java
