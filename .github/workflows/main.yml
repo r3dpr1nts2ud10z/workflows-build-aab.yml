@@ -37,3 +37,6 @@ jobs:
         with:
           name: red-spade-network-signed-apk
           path: workspace-android/app/build/outputs/apk/release/*.apk
+<uses-feature android:name="android.software.leanback" android:required="false" />
+<uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+<category android:name="android.intent.category.LEANBACK_LAUNCHER" />
