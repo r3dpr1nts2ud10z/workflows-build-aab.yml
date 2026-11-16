@@ -12,7 +12,7 @@ import android.webkit.WebViewClient;
 
 public class MainActivity extends Activity {
     private WebView webView;
-    private static final String TARGET_URL = "https://872a8717-939b-44e4-9e6b-02dc0950c19d-00-31y1djitaq6e1.spock.replit.dev";
+    private static final String TARGET_URL = "https://r3dpr1nts2ud10z.github.io/workflows-build-aab.yml/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
