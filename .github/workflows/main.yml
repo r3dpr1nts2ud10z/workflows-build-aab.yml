@@ -38,10 +38,20 @@ EOF
 
             cat << 'EOF' > build.gradle
 buildscript {
-    repositories { google(); mavenCentral() }
-    dependencies { classpath 'com.android.tools.build:gradle:8.1.0' }
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.1.0'
+    }
 }
-allprojects { repositories { google(); mavenCentral() } }
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
 EOF
 
             cat << 'EOF' > app/build.gradle
@@ -77,26 +87,4 @@ EOF
             cat << 'EOF' > app/src/main/java/com/redspade/app/MainActivity.java
 package com.redspade.app;
 import android.app.Activity;
-import android.os.Bundle;
-public class MainActivity extends Activity {
-    @Override protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-}
-EOF
-          else
-            cd "$(dirname "$BUILD_DIR")"
-          fi
-
-          if [ ! -f "./gradlew" ]; then
-            gradle wrapper
-          fi
-
-          chmod +x ./gradlew
-          ./gradlew bundleRelease --stacktrace
-
-      - name: Upload AAB Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: red-spade-network-release-aab
-          path: '**/build/outputs/bundle/release/*.aab'
+import android.os.Bundle
