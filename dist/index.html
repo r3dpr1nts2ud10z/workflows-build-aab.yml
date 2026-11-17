@@ -180,13 +180,40 @@
 
         async function checkStatus() {
             try {
-                const res = await fetch('/status');
+                async function checkStatus() {
+    try {
+        const res = await fetch('https://pried-distinct-pointed.ngrok-free.dev/status', {
+            headers: {
+                'ngrok-skip-browser-warning': 'true'
+            }
+        });
+        const data = await res.json();
+        document.getElementById('server-status').innerText = data.status.toUpperCase();
+    } catch (err) {
+        document.getElementById('server-status').innerText = "OFFLINE";
+    }
+}
                 const data = await res.json();
                 document.getElementById('server-status').innerText = data.status.toUpperCase();
             } catch (err) {
                 document.getElementById('server-status').innerText = "OFFLINE";
             }
-        }
+        }const res = await fetch('https://pried-distinct-pointed.ngrok-free.dev/command', {
+    method: 'POST',
+    headers: { 
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true'
+    },
+    body: JSON.stringify({
+        action: 'render',
+        output: filename,
+        width,
+        height,
+        bitrate,
+        overlay_text: overlayText,
+        watermark: watermark
+    })
+});
 
         async function triggerRender() {
             const filename = document.getElementById('output-name').value || 'output.mp4';
