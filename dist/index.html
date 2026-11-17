@@ -182,8 +182,7 @@
             try {
                 async function checkStatus() {
     try {
-        const res = await fetch('https://pried-distinct-pointed.ngrok-free.dev/status', {
-            headers: {
+      const API_BASE_URL = "https://pried-distinct-pointed.ngrok-free.dev";      headers: {
                 'ngrok-skip-browser-warning': 'true'
             }
         });
